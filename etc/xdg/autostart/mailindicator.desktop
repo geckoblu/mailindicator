@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Mail Indicator
+Icon=mailindicator
+Comment=Monitors mailboxes for new mail.
+Type=Application
+Categories=GTK;Network;Email;
+Exec=mailindicator
+Terminal=false
+StartupNotify=true

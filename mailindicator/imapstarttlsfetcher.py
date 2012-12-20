@@ -1,0 +1,43 @@
+from mailindicator import Mail
+from mailindicator.imapstarttls import IMAP4_STARTTLS
+
+class ImapStartTlsFetcher:
+    
+    def __init__(self, username, passwd, host, port = 143):
+        self.username = username
+        self.passwd = passwd
+        self.host = host
+        
+    def fetchmail(self):
+        mails = []
+        
+        imap = IMAP4_STARTTLS(self.host)
+        imap.login(self.username, self.passwd)
+        imap.select(readonly = True)
+        
+        status, uids = imap.uid('SEARCH', 'UNSEEN')
+        
+        for uid in uids[0].split():
+            status, data = imap.uid('FETCH', uid, '(BODY[HEADER.FIELDS (DATE SUBJECT FROM)])')
+            message = self._message_from_data(data)
+            mail = Mail(uid, message['FROM'], message['SUBJECT'], message['DATE'])
+            mails.append(mail)
+            
+                
+
+            
+        imap.close()
+        imap.logout()
+        
+        return mails
+    
+    def _message_from_data(self, data):
+        message = {}
+        for line in data[0][1].split('\n'):
+            i = line.find(':')
+            if i > -1:
+                key = line[:i].strip().upper()
+                value = line[i+1:].strip()
+                message[key] = value
+        return message
+        
