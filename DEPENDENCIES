@@ -1,0 +1,4 @@
+Dependencies on not standard modules:
+
+* python-lxml
+* python-xdg
