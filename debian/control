@@ -9,7 +9,7 @@ Vcs-Git: git://github.com/geckoblu/mailindicator.git
 
 Package: mailindicator
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-lxml, python-xdg
+Depends: ${misc:Depends}, ${python:Depends}, python-lxml, python-xdg, python-feedparser
 Recommends: python-notify
 Description: Monitors mailboxes for new mail.
  Monitors mailboxes for new mail showing the status.
