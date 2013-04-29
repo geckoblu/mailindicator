@@ -13,7 +13,7 @@ try:
     import DistUtilsExtra.auto
 except ImportError:
     import sys
-    print >> sys.stderr, 'To build gitsync you need https://launchpad.net/python-distutils-extra'
+    print >> sys.stderr, 'To build mailindicator you need https://launchpad.net/python-distutils-extra'
     sys.exit(1)
 
 assert StrictVersion(DistUtilsExtra.auto.__version__) >= '2.4', 'needs DistUtilsExtra.auto >= 2.4'
