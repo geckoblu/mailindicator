@@ -2,7 +2,7 @@ from mailindicator.logging import debug, info
 import gobject
 import threading
 import mailindicator
-
+from mailindicator.network import network_available
 
 class MailboxMonitor(threading.Thread):
     def __init__(self, status_icon, label, sleep_time, fetchmail):
@@ -20,22 +20,25 @@ class MailboxMonitor(threading.Thread):
     def refresh(self):
         debug('MailboxMonitor._update start')
         
-        try:
-            mails = self.fetchmail()
-            
-            if len(mails) > 0:
-                debug('MailboxMonitor %s %s Mail found' % (self.label, len(mails)))
-            else:
-                debug('MailboxMonitor %s No Mail found' % self.label)
-            
-            self.status_icon.set_mails(self.label, mails)
-        except mailindicator.AuthenticationError, e:
-            message = 'Login failed, wrong user or password.'
-            self.status_icon.set_error(self.label, message)
-        except Exception, e:
-            #TODO log the exception (stack trace)
-            message = 'Exception %s' % str(e)
-            self.status_icon.set_error(self.label, message)
+        if (network_available()):
+            try:
+                mails = self.fetchmail()
+                
+                if len(mails) > 0:
+                    debug('MailboxMonitor %s %s Mail found' % (self.label, len(mails)))
+                else:
+                    debug('MailboxMonitor %s No Mail found' % self.label)
+                
+                self.status_icon.set_mails(self.label, mails)
+            except mailindicator.AuthenticationError, e:
+                message = 'Login failed, wrong user or password.'
+                self.status_icon.set_error(self.label, message)
+            except Exception, e:
+                #TODO log the exception (stack trace)
+                message = 'Exception %s' % str(e)
+                self.status_icon.set_error(self.label, message)
+        else:
+            info('Network not available')
         
     def _update(self):
         self.refresh()
