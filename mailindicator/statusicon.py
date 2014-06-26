@@ -117,7 +117,7 @@ class StatusIcon:
                     unread_ids.append(mail.id)
                     if len(mail.subject) > 40:
                         mail.subject = mail.subject[0:40]
-                    s = 'Mailbox: %s\nFrom:        %s\nSubject:    %s\nSent:           %s\n\n' % (label, mail.mfrom, mail.subject, mail.date)
+                    s = 'Mailbox: %s\nFrom:        %s\nSubject:    %s\nSent:           %s\n\n' % (label, mail.mfrom, mail.subject, mail.date)                    
                     summary = '%s%s' % (summary, s)
                     
                     if self.pynotify_available:
@@ -127,6 +127,8 @@ class StatusIcon:
                     
                         if not mail.id in notified:
                             notified.append(mail.id)
+                            s = s.replace('<', '&lt;')
+                            s = s.replace('>', '&gt;')
                             n = pynotify.Notification('New Message', s)
                             n.show()
                         else:
