@@ -1,6 +1,7 @@
 mailindicator (0.2.1) unstable; urgency=low
 
   * Fix notification of special characters (angle brackets)
+  * Update debian Standards-Version to 3.9.5
 
  -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 26 Jun 2014 07:58:52 +0200
 
