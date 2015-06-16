@@ -1,7 +1,9 @@
 from imaplib import IMAP4_PORT, IMAP4, Commands, __all__
 import ssl
 
+
 Commands['STARTTLS'] = ('NONAUTH',)
+
 
 class IMAP4_STARTTLS(IMAP4):
 
@@ -17,14 +19,12 @@ class IMAP4_STARTTLS(IMAP4):
     for more documentation see the docstring of the parent class IMAP4.
     """
 
-
-    def __init__(self, host = '', port = IMAP4_PORT, keyfile = None, certfile = None):
+    def __init__(self, host='', port=IMAP4_PORT, keyfile=None, certfile=None):
         self._tls_established = False
         self.keyfile = keyfile
         self.certfile = certfile
         IMAP4.__init__(self, host, port)
         self.starttls()
-
 
 #        def open(self, host = '', port = IMAP4_PORT):
 #            """Setup connection to remote server on "host:port".
@@ -51,7 +51,7 @@ class IMAP4_STARTTLS(IMAP4):
 #            ssl_context.options |= ssl.OP_NO_SSLv2
         typ, dat = self._simple_command(name)
         if typ == 'OK':
-            #self.sock = socket.create_connection((self.host, self.port))
+            # self.sock = socket.create_connection((self.host, self.port))
             self.sslobj = ssl.wrap_socket(self.sock, self.keyfile, self.certfile)
             self.file = self.sslobj.makefile('rb')
             self._tls_established = True
@@ -59,23 +59,20 @@ class IMAP4_STARTTLS(IMAP4):
         else:
             raise self.error("Couldn't establish TLS session")
         return self._untagged_response(typ, dat, name)
-    
+
     def _get_capabilities(self):
         typ, dat = self.capability()
         if dat == [None]:
             raise self.error('no CAPABILITY response from server')
         self.capabilities = tuple(dat[-1].upper().split())
 
-
     def read(self, size):
         """Read 'size' bytes from remote."""
         return self.file.read(size)
 
-
     def readline(self):
         """Read line from remote."""
         return self.file.readline()
-
 
     def send(self, data):
         """Send data to remote."""
@@ -84,18 +81,16 @@ class IMAP4_STARTTLS(IMAP4):
             while bytes > 0:
                 sent = self.sslobj.write(data)
                 if sent == bytes:
-                    break    # avoid copy
+                    break  # avoid copy
                 data = data[sent:]
                 bytes = bytes - sent
         else:
             self.sock.sendall(data)
 
-
     def shutdown(self):
         """Close I/O established in "open"."""
         self.file.close()
         self.sock.close()
-
 
     def socket(self):
         """Return socket instance used to connect to IMAP4 server.
@@ -103,7 +98,6 @@ class IMAP4_STARTTLS(IMAP4):
         socket = <instance>.socket()
         """
         return self.sock
-
 
     def ssl(self):
         """Return SSLObject instance used to communicate with the IMAP4 server.

@@ -1,8 +1,9 @@
 # From http://code.activestate.com/recipes/439093-get-names-of-all-up-network-interfaces-linux-only/
-import socket
-import fcntl
-import struct
 import array
+import fcntl
+import socket
+import struct
+
 
 def all_interfaces():
     max_possible = 128  # arbitrary. raise if needed.
@@ -15,7 +16,8 @@ def all_interfaces():
         struct.pack('iL', bytez, names.buffer_info()[0])
     ))[0]
     namestr = names.tostring()
-    return [namestr[i:i+32].split('\0', 1)[0] for i in range(0, outbytes, 32)]
+    return [namestr[i:i + 32].split('\0', 1)[0] for i in range(0, outbytes, 32)]
+
 
 def network_available():
     """Check if a network connection is available"""
