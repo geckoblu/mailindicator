@@ -4,8 +4,8 @@ import sys
 import mailindicator.runner
 
 try:
-    retval = mailindicator.runner.main();
+    retval = mailindicator.runner.main()
 except KeyboardInterrupt:
-    retval = 0;
-sys.exit(retval);
+    retval = 0
 
+sys.exit(retval)
