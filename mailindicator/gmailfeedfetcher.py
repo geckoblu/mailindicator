@@ -10,13 +10,20 @@ USER_AGENT = 'User-Agent', 'Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)'
 
 class GMailFeedFetcher:
 
-    def __init__(self, user, passwd):
-        self.user = user
-        self.passwd = passwd
+    def __init__(self, label, **kwargs):
+        try:
+            self.username = kwargs['username']
+        except KeyError:
+            raise Exception('Missing required username for : %s' % label)
+
+        try:
+            self.passwd = kwargs['userpassword']
+        except KeyError:
+            raise Exception('Missing required userpassword for : %s' % label)
 
     def fetchmail(self):
 
-        credentials = base64.encodestring('%s:%s' % (self.user, self.passwd))
+        credentials = base64.encodestring('%s:%s' % (self.username, self.passwd))
 
         url = 'https://mail.google.com/mail/feed/atom/'
 

@@ -5,8 +5,11 @@ from mailindicator import Mail
 
 class LocalMailboxFetcher:
 
-    def __init__(self, mboxpath):
-        self.mboxpath = mboxpath
+    def __init__(self, label, **kwargs):
+        try:
+            self.mboxpath = kwargs['mboxpath']
+        except KeyError:
+            raise Exception('Missing required mboxpath for : %s' % label)
 
     def fetchmail(self):
         mails = []

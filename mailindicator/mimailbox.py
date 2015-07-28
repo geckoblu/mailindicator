@@ -17,19 +17,13 @@ class Mailbox:
             self.enabled = True
 
         if self.type == Mailbox.GMAILFEED:
-            self.username = kwargs['username']
-            self.userpassword = kwargs['userpassword']
-            self.fetcher = gmailfeedfetcher.GMailFeedFetcher(self.username, self.userpassword)
+            self.fetcher = gmailfeedfetcher.GMailFeedFetcher(label, **kwargs)
         elif self.type == Mailbox.LOCALMBOX:
-            self.mboxpath = kwargs['mboxpath']
-            self.fetcher = localmailboxfetcher.LocalMailboxFetcher(self.mboxpath)
+            self.fetcher = localmailboxfetcher.LocalMailboxFetcher(label, **kwargs)
         elif self.type == Mailbox.IMAP:
             self.fetcher = imapfetcher.ImapFetcher(label, **kwargs)
         elif self.type == Mailbox.IMAPSTARTTLS:
-            self.username = kwargs['username']
-            self.userpassword = kwargs['userpassword']
-            self.host = kwargs['host']
-            self.fetcher = imapstarttlsfetcher.ImapStartTlsFetcher(self.username, self.userpassword, self.host)
+            self.fetcher = imapstarttlsfetcher.ImapStartTlsFetcher(label, **kwargs)
         else:
             raise Exception('Not a valid Mailbox type: %s' % typ)
 

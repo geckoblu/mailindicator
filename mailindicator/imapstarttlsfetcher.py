@@ -4,10 +4,27 @@ from mailindicator.imapstarttls import IMAP4_STARTTLS
 
 class ImapStartTlsFetcher:
 
-    def __init__(self, username, passwd, host, port=143):
-        self.username = username
-        self.passwd = passwd
-        self.host = host
+    def __init__(self, label, **kwargs):
+
+        try:
+            self.username = kwargs['username']
+        except KeyError:
+            raise Exception('Missing required username for : %s' % label)
+
+        try:
+            self.passwd = kwargs['userpassword']
+        except KeyError:
+            raise Exception('Missing required userpassword for : %s' % label)
+
+        try:
+            self.host = kwargs['host']
+        except KeyError:
+            raise Exception('Missing required host for : %s' % label)
+
+        if 'port' in kwargs:
+            self.port = kwargs['port']
+        else:
+            self.port = 143
 
     def fetchmail(self):
         mails = []
