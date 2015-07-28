@@ -1,9 +1,10 @@
-from mailindicator import gmailfeedfetcher, localmailboxfetcher, imapstarttlsfetcher
+from mailindicator import gmailfeedfetcher, localmailboxfetcher, imapstarttlsfetcher, imapfetcher
 
 
 class Mailbox:
     GMAILFEED = 'GMAILFEED'
     LOCALMBOX = 'LOCALMBOX'
+    IMAP = 'IMAP'
     IMAPSTARTTLS = 'IMAPSTARTTLS'
 
     def __init__(self, typ, label, sleep_time, **kwargs):
@@ -22,6 +23,8 @@ class Mailbox:
         elif self.type == Mailbox.LOCALMBOX:
             self.mboxpath = kwargs['mboxpath']
             self.fetcher = localmailboxfetcher.LocalMailboxFetcher(self.mboxpath)
+        elif self.type == Mailbox.IMAP:
+            self.fetcher = imapfetcher.ImapFetcher(label, **kwargs)
         elif self.type == Mailbox.IMAPSTARTTLS:
             self.username = kwargs['username']
             self.userpassword = kwargs['userpassword']
