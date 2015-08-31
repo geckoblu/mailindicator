@@ -8,13 +8,13 @@ class TestImapfetcher(unittest.TestCase):
 
     def testConnection(self):
         HOST = 'localhost'
-        USERNAME = 'username'
-        PASSWORD = 'password'
+        USERNAME = 'b02183'
+        PASSWORD = 'Leonida123'
         PORT = '1143'
 
         kwargs = {}
         kwargs['username'] = USERNAME
-        kwargs['passwd'] = PASSWORD
+        kwargs['userpassword'] = PASSWORD
         kwargs['host'] = HOST
         kwargs['port'] = PORT
 

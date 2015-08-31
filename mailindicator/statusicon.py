@@ -47,7 +47,7 @@ class StatusIcon:
             mb = self.mailboxes[label]
             if not mb.inerror:
 
-                if not self.markedasread.has_key(label):
+                if not label in self.markedasread:
                     self.markedasread[label] = []
                 markedasread = self.markedasread[label]
                 markedasread = markedasread + mb.unread_ids
@@ -106,7 +106,7 @@ class StatusIcon:
         unread = 0
         if len(mails) > 0:
 
-            if not self.markedasread.has_key(label):
+            if not label in self.markedasread:
                 self.markedasread[label] = []
             markedasread = self.markedasread[label]
 
@@ -122,7 +122,7 @@ class StatusIcon:
                     summary = '%s%s' % (summary, s)
 
                     if self.pynotify_available:
-                        if not self.notified.has_key(label):
+                        if not label in self.notified:
                             self.notified[label] = []
                         notified = self.notified[label]
 
@@ -145,7 +145,7 @@ class StatusIcon:
             self.mailboxes[label] = mb
         else:
             info('StatusIcon %s No unread mail found' % label)
-            if self.mailboxes.has_key(label):
+            if label in self.mailboxes:
                 del self.mailboxes[label]
         self._update_status()
 

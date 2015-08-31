@@ -1,3 +1,10 @@
+mailindicator (0.3) unstable; urgency=low
+
+  * Added IMAP fetching
+  * Better configuration parameters handling
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Tue, 28 Jul 2015 08:58:52 +0200
+ 
 mailindicator (0.2.1) unstable; urgency=low
 
   * Fix notification of special characters (angle brackets)

@@ -1,6 +1,6 @@
 import argparse
 import gtk
-from logging import info, debug
+from logging import info
 import logging
 from mailindicator.mailboxmonitor import MailboxMonitor
 from mailindicator.statusicon import StatusIcon

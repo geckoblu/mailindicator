@@ -11,7 +11,7 @@ class Mailbox:
         self.type = typ
         self.label = label
         self.sleep_time = int(sleep_time)
-        if kwargs.has_key('enabled'):
+        if 'enabled' in kwargs:
             self.enabled = (kwargs['enabled'].lower() != 'false')
         else:
             self.enabled = True
