@@ -127,6 +127,7 @@ class StatusIcon:
                         notified = self.notified[label]
 
                         if not mail.id in notified:
+                            debug('StatusIcon Mail not notified %s' % mail)
                             notified.append(mail.id)
                             s = s.replace('<', '&lt;')
                             s = s.replace('>', '&gt;')
