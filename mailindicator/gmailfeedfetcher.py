@@ -23,7 +23,7 @@ class GMailFeedFetcher:
 
     def fetchmail(self):
 
-        credentials = base64.encodestring('%s:%s' % (self.username, self.passwd))
+        credentials = base64.b64encode('%s:%s' % (self.username, self.passwd))
 
         url = 'https://mail.google.com/mail/feed/atom/'
 

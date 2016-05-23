@@ -16,10 +16,18 @@ class TestGmailfeedfetcher(unittest.TestCase):
 
         os.environ['https_proxy'] = 'http://127.0.0.1:6060'
 
-        fetcher = GMailFeedFetcher('user', 'password')
+        try:
+            username = os.environ['username']
+        except KeyError:
+            raise Exception('Missing required username')
+        try:
+            userpassword = os.environ['userpassword']
+        except KeyError:
+            raise Exception('Missing required userpassword')
+
+        fetcher = GMailFeedFetcher('GMAIL', username=username, userpassword=userpassword)
         fetcher.fetchmail()
 
 
 if __name__ == "__main__":
-    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
