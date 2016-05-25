@@ -2,10 +2,6 @@ import base64
 import feedparser
 from mailindicator import Mail
 import mailindicator
-import urllib2
-
-
-USER_AGENT = 'User-Agent', 'Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)'
 
 
 class GMailFeedFetcher:
@@ -27,24 +23,24 @@ class GMailFeedFetcher:
 
         url = 'https://mail.google.com/mail/feed/atom/'
 
-        req = urllib2.Request(url)
-        req.add_header('User-Agent', USER_AGENT)
-        req.add_header('Accept-Encoding', 'gzip, deflate')
-        req.add_header('Authorization', 'Basic %s' % credentials)
+        request_headers = {}
+        request_headers['Authorization'] = 'Basic %s' % credentials
 
         try:
-            resp = urllib2.urlopen(req)
-        except urllib2.HTTPError, e:
-            if e.code == 401:
-                raise mailindicator.AuthenticationError(e)
+            d = feedparser.parse(url, request_headers=request_headers)
+            if d.status == 401:
+                raise mailindicator.AuthenticationError()
+            elif d.status >= 400:
+                import BaseHTTPServer
+                smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[d.status]
+                raise Exception('HTTP ERROR %s - %s - %s' % (d.status, smsg, lmsg))
+        except AttributeError as e:  # Raised by d.status if something went wrong in parsing
+            if d.bozo == 1:
+                raise d.bozo_exception
             else:
                 raise e
 
-        pageData = resp.read()
-
         mails = []
-
-        d = feedparser.parse(pageData)
         for entry in d.entries:
             # print '-'*20
             # for key in entry.keys():

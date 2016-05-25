@@ -6,15 +6,8 @@ import unittest
 class TestGmailfeedfetcher(unittest.TestCase):
 
     def testConnection(self):
-        print os.environ
-        del os.environ['http_proxy']
-        del os.environ['https_proxy']
-        print os.environ
-
         import mailindicator.config as config
         config.load()
-
-        os.environ['https_proxy'] = 'http://127.0.0.1:6060'
 
         try:
             username = os.environ['username']
@@ -26,7 +19,8 @@ class TestGmailfeedfetcher(unittest.TestCase):
             raise Exception('Missing required userpassword')
 
         fetcher = GMailFeedFetcher('GMAIL', username=username, userpassword=userpassword)
-        fetcher.fetchmail()
+        mails = fetcher.fetchmail()
+        print(mails)
 
 
 if __name__ == "__main__":
