@@ -1,9 +1,11 @@
+"""-"""
 from mailbox import NoSuchMailboxError
 import mailbox
 from mailindicator import Mail
 
 
 class LocalMailboxFetcher:
+    """Fetch mails from local mailbox"""
 
     def __init__(self, label, **kwargs):
         try:
@@ -12,6 +14,7 @@ class LocalMailboxFetcher:
             raise Exception('Missing required mboxpath for : %s' % label)
 
     def fetchmail(self):
+        """Fetch mails from local mailbox"""
         mails = []
         try:
             mbox = mailbox.mbox(self.mboxpath, create=False)

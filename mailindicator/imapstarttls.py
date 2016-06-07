@@ -1,3 +1,4 @@
+"""-"""
 from imaplib import IMAP4_PORT, IMAP4, Commands, __all__
 import ssl
 
@@ -6,7 +7,6 @@ Commands['STARTTLS'] = ('NONAUTH',)
 
 
 class IMAP4_STARTTLS(IMAP4):
-
     """IMAP4 client class over SSL connection
 
     Instantiate with: IMAP4_SSL([host[, port[, keyfile[, certfile]]]])
@@ -24,7 +24,7 @@ class IMAP4_STARTTLS(IMAP4):
         self.keyfile = keyfile
         self.certfile = certfile
         IMAP4.__init__(self, host, port)
-        self.starttls()
+        self._starttls()
 
 #        def open(self, host = '', port = IMAP4_PORT):
 #            """Setup connection to remote server on "host:port".
@@ -38,7 +38,7 @@ class IMAP4_STARTTLS(IMAP4):
 #            self.sslobj = ssl.wrap_socket(self.sock, self.keyfile, self.certfile)
 #            self.file = self.sslobj.makefile('rb')
 
-    def starttls(self, ssl_context=None):
+    def _starttls(self, ssl_context=None):
         name = 'STARTTLS'
         if self._tls_established:
             raise self.abort('TLS session already established')
@@ -77,13 +77,13 @@ class IMAP4_STARTTLS(IMAP4):
     def send(self, data):
         """Send data to remote."""
         if self._tls_established:
-            bytes = len(data)
-            while bytes > 0:
+            byts = len(data)
+            while byts > 0:
                 sent = self.sslobj.write(data)
-                if sent == bytes:
+                if sent == byts:
                     break  # avoid copy
                 data = data[sent:]
-                bytes = bytes - sent
+                byts = byts - sent
         else:
             self.sock.sendall(data)
 

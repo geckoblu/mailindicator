@@ -1,11 +1,13 @@
+"""-"""
+import threading
 import gobject
 import mailindicator
 from mailindicator.logging import debug, info
 from mailindicator.network import network_available
-import threading
 
 
 class MailboxMonitor(threading.Thread):
+    """Thread to monitor mailbox"""
     def __init__(self, status_icon, label, sleep_time, fetchmail):
         threading.Thread.__init__(self)
         self.status_icon = status_icon
@@ -19,9 +21,10 @@ class MailboxMonitor(threading.Thread):
         self._update()
 
     def refresh(self):
+        """Refresh status."""
         debug('MailboxMonitor._update start')
 
-        if (network_available()):
+        if network_available():
             try:
                 mails = self.fetchmail()
 
@@ -31,12 +34,12 @@ class MailboxMonitor(threading.Thread):
                     debug('MailboxMonitor %s No Mail found' % self.label)
 
                 self.status_icon.set_mails(self.label, mails)
-            except mailindicator.AuthenticationError, e:
+            except mailindicator.AuthenticationError as ex:
                 message = 'Login failed, wrong user or password.'
                 self.status_icon.set_error(self.label, message)
-            except Exception, e:
+            except Exception as ex:
                 # TODO log the exception (stack trace)
-                message = 'Exception %s' % str(e)
+                message = 'Exception %s' % str(ex)
                 self.status_icon.set_error(self.label, message)
         else:
             info('Network not available')

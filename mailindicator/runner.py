@@ -1,51 +1,44 @@
+"""-"""
 import argparse
 import gtk
-from logging import info
-import logging
+import mailindicator.logging as logging
 from mailindicator.mailboxmonitor import MailboxMonitor
 from mailindicator.statusicon import StatusIcon
-import os
 
 import mailindicator.config as config
 
 
-def parse_cmdline():
-
-    def directory(repo):
-        repoDir = os.path.abspath(os.path.expanduser(repo))
-        if not os.path.isdir(repoDir):
-            msg = '%r is not a directory' % repo
-            raise argparse.ArgumentTypeError(msg)
-        return repoDir
+def _parse_cmdline():
 
     parser = argparse.ArgumentParser(description='Monitors mailboxes for new mail.')
-    parser.add_argument('--debug', action='store_true', help='show some debug messages in console')
-    parser.add_argument('-q', '--quiet', dest='quiet', action='store_true', help='suppress non-error messages in console')
+    parser.add_argument('--debug',
+                        action='store_true',
+                        help='show some debug messages in console')
+    parser.add_argument('-q', '--quiet',
+                        dest='quiet',
+                        action='store_true',
+                        help='suppress non-error messages in console')
 
     return parser.parse_args()
 
 
-def error(message):
-    # TODO show error in a popup dialog
-    logging.error(message)
-
-
 def main():
+    """Main function"""
 
-    args = parse_cmdline()
+    args = _parse_cmdline()
 
     if args.debug:
-        logging.setLevel(logging.DEBUG)
+        logging.set_level(logging.DEBUG)
     elif args.quiet:
-        logging.setLevel(logging.NONE)
+        logging.set_level(logging.NONE)
     else:
-        logging.setLevel(logging.INFO)
+        logging.set_level(logging.INFO)
 
-    logging.setLevel(logging.DEBUG)
+    logging.set_level(logging.DEBUG)
 
     config.load()
 
-    info("Mailindicator started.")
+    logging.info("Mailindicator started.")
 
     mailboxes = config.mailboxes
     monitors = []
@@ -54,7 +47,10 @@ def main():
         status_icon = StatusIcon()
 
         for mailbox in mailboxes:
-            mb_monitor = MailboxMonitor(status_icon, mailbox.label, mailbox.sleep_time, mailbox.fetcher.fetchmail)
+            mb_monitor = MailboxMonitor(status_icon,
+                                        mailbox.label,
+                                        mailbox.sleep_time,
+                                        mailbox.fetcher.fetchmail)
             mb_monitor.start()
             monitors.append(mb_monitor)
 

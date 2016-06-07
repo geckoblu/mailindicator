@@ -1,3 +1,4 @@
+"""-"""
 import sys
 
 
@@ -6,24 +7,28 @@ INFO = 2
 WARNING = 1
 NONE = 0
 
-_level = 0
+_LEVEL = 0
 
 
-def setLevel(level):
-    global _level
-    _level = level
+def set_level(level):
+    """Set log level."""
+    global _LEVEL
+    _LEVEL = level
 
 
 def info(message):
-    if _level >= INFO:
+    """Log info messages."""
+    if _LEVEL >= INFO:
         print(message)
 
 
 def debug(message):
-    if _level >= DEBUG:
+    """Log debug messages."""
+    if _LEVEL >= DEBUG:
         print(message)
 
 
 def error(message):
+    """Log error messages."""
     sys.stderr.write(message)
     sys.stderr.write('\n')

@@ -1,12 +1,14 @@
+"""-"""
+import threading
 import gobject
 import gtk
+import pynotify
 from mailindicator import VERSION
 from mailindicator.logging import debug, info
-import pynotify
-import threading
 
 
 class MB:
+    """MB"""
     def __init__(self, label):
         self.label = label
         self.inerror = False
@@ -17,6 +19,7 @@ class MB:
 
 
 class StatusIcon:
+    """Status icon"""
 
     def __init__(self):
         self.lock = threading.Lock()
@@ -31,6 +34,7 @@ class StatusIcon:
         self.monitors = []
 
     def set_monitors(self, monitors):
+        """Set monitors"""
         self.monitors = monitors
 
     def _show_preferences_dialog(self, widget):
@@ -44,13 +48,13 @@ class StatusIcon:
     def _left_click_event(self, icon):
         debug('StatusIcon clicked')
         for label in self.mailboxes.keys():
-            mb = self.mailboxes[label]
-            if not mb.inerror:
+            mailbox = self.mailboxes[label]
+            if not mailbox.inerror:
 
-                if not label in self.markedasread:
+                if label not in self.markedasread:
                     self.markedasread[label] = []
                 markedasread = self.markedasread[label]
-                markedasread = markedasread + mb.unread_ids
+                markedasread = markedasread + mailbox.unread_ids
                 self.markedasread[label] = markedasread
 
                 del self.mailboxes[label]
@@ -67,15 +71,17 @@ class StatusIcon:
             ms_summary = ''
             mb_errorsummary = ''
             for label in self.mailboxes.keys():
-                mb = self.mailboxes[label]
-                if mb.inerror:
+                mailbox = self.mailboxes[label]
+                if mailbox.inerror:
                     inerror = True
-                    mb_errorsummary = '%s%s : %s\n' % (mb_errorsummary, mb.label, mb.errormessage)
+                    mb_errorsummary = '%s%s : %s\n' % (mb_errorsummary,
+                                                       mailbox.label,
+                                                       mailbox.errormessage)
                 else:
-                    if mb.unread > 0:
+                    if mailbox.unread > 0:
                         newmail = True
-                        mb_summary = '%s%s (%s)\n' % (mb_summary, mb.label, mb.unread)
-                        ms_summary = '%s%s' % (ms_summary, mb.summary)
+                        mb_summary = '%s%s (%s)\n' % (mb_summary, mailbox.label, mailbox.unread)
+                        ms_summary = '%s%s' % (ms_summary, mailbox.summary)
 
             # Update status icon
             if inerror:
@@ -84,13 +90,15 @@ class StatusIcon:
             else:
                 gobject.idle_add(self.statusicon.set_blinking, False)
                 tooltip_text = ''
-
             if newmail:
-                tooltip_text = '%sMailboxes having new mail\n\n%s\n\nMail summary\n\n%s' % (tooltip_text, mb_summary, ms_summary)
+                ttxt = 'Mailboxes having new mail\n\n' + \
+                       '%s\n\n' + \
+                       'Mail summary\n\n%s'
+                ttxt = ttxt % (mb_summary, ms_summary)
+                tooltip_text = tooltip_text + ttxt
             else:
                 if not inerror:
                     tooltip_text = 'No unread mails.'
-
             if newmail or inerror:
                 gobject.idle_add(self.statusicon.set_from_icon_name, 'indicator-messages-new')
             else:
@@ -103,47 +111,52 @@ class StatusIcon:
             self.lock.release()
 
     def set_mails(self, label, mails):
+        """Set mails."""
         unread = 0
         if len(mails) > 0:
 
-            if not label in self.markedasread:
+            if label not in self.markedasread:
                 self.markedasread[label] = []
             markedasread = self.markedasread[label]
 
             unread_ids = []
             summary = ''
             for mail in mails:
-                if not mail.id in markedasread:
+                if mail.id not in markedasread:
                     unread += 1
                     unread_ids.append(mail.id)
                     if len(mail.subject) > 40:
                         mail.subject = mail.subject[0:40]
-                    s = 'Mailbox: %s\nFrom:        %s\nSubject:    %s\nSent:           %s\n\n' % (label, mail.mfrom, mail.subject, mail.date)
-                    summary = '%s%s' % (summary, s)
+                    smr = 'Mailbox: %s\n' + \
+                          'From:       %s\n' + \
+                          'Subject:   %s\n' + \
+                          'Sent:         %s\n\n'
+                    smr = smr % (label, mail.mfrom, mail.subject, mail.date)
+                    summary += smr
 
                     if self.pynotify_available:
-                        if not label in self.notified:
+                        if label not in self.notified:
                             self.notified[label] = []
                         notified = self.notified[label]
 
-                        if not mail.id in notified:
+                        if mail.id not in notified:
                             debug('StatusIcon Mail not notified %s' % mail)
                             notified.append(mail.id)
-                            s = s.replace('<', '&lt;')
-                            s = s.replace('>', '&gt;')
-                            n = pynotify.Notification('New Message', s)
-                            n.show()
+                            smr = smr.replace('<', '&lt;')
+                            smr = smr.replace('>', '&gt;')
+                            ntf = pynotify.Notification('New Message', smr)
+                            ntf.show()
                         else:
                             debug('StatusIcon Mail already notified %s' % mail)
                 else:
                     debug('StatusIcon Mail marked as read %s' % mail)
 
         if unread > 0:
-            mb = MB(label)
-            mb.unread = unread
-            mb.unread_ids = unread_ids
-            mb.summary = summary
-            self.mailboxes[label] = mb
+            mailbox = MB(label)
+            mailbox.unread = unread
+            mailbox.unread_ids = unread_ids
+            mailbox.summary = summary
+            self.mailboxes[label] = mailbox
         else:
             info('StatusIcon %s No unread mail found' % label)
             if label in self.mailboxes:
@@ -151,10 +164,11 @@ class StatusIcon:
         self._update_status()
 
     def set_error(self, label, message):
-        mb = MB(label)
-        mb.inerror = True
-        mb.errormessage = message
-        self.mailboxes[label] = mb
+        """Set error."""
+        mailbox = MB(label)
+        mailbox.inerror = True
+        mailbox.errormessage = message
+        self.mailboxes[label] = mailbox
 
         self._update_status()
 
@@ -162,20 +176,20 @@ class StatusIcon:
         debug('StatusIcon right click event')
         menu = gtk.Menu()
 
-        mi = gtk.ImageMenuItem(gtk.STOCK_REFRESH)
-        mi.connect("activate", self._refresh)
-        menu.append(mi)
+        itm = gtk.ImageMenuItem(gtk.STOCK_REFRESH)
+        itm.connect("activate", self._refresh)
+        menu.append(itm)
 
-        mi = gtk.SeparatorMenuItem()
-        menu.append(mi)
+        itm = gtk.SeparatorMenuItem()
+        menu.append(itm)
 
-        mi = gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
-        mi.connect("activate", self._show_preferences_dialog)
-        menu.append(mi)
+        itm = gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
+        itm.connect("activate", self._show_preferences_dialog)
+        menu.append(itm)
 
-        mi = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
-        mi.connect("activate", self._show_about_dialog)
-        menu.append(mi)
+        itm = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
+        itm.connect("activate", self._show_about_dialog)
+        menu.append(itm)
 
         menu.show_all()
         menu.popup(None, None, None, button, time)
@@ -188,7 +202,15 @@ class StatusIcon:
         about_dialog.set_version(VERSION)
         about_dialog.set_authors(["Alessio Piccoli <alepic@geckoblu.net>"])
         about_dialog.set_comments('Monitors your mailboxes for new mail')
-        about_dialog.set_license("""This program is free software; you can redistribute it and/or modify it
+        about_dialog.set_license(_LICENSE)
+        about_dialog.set_copyright('Copyrigth (c) 2012')
+        about_dialog.set_website('http://www.geckoblu.net/html/mailindicator.html')
+
+        about_dialog.run()
+        about_dialog.destroy()
+
+
+_LICENSE = """This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 2 of the License, or (at your option)
 any later version.
@@ -200,9 +222,4 @@ more details.
 
 You should have received a copy of the GNU General Public License along with
 this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
-Street, Fifth Floor, Boston, MA 02110-1301, USA.""")
-        about_dialog.set_copyright('Copyrigth (c) 2012')
-        about_dialog.set_website('http://www.geckoblu.net/html/mailindicator.html')
-
-        about_dialog.run()
-        about_dialog.destroy()
+Street, Fifth Floor, Boston, MA 02110-1301, USA."""

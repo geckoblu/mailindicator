@@ -1,3 +1,4 @@
+"""-"""
 import base64
 import feedparser
 from mailindicator import Mail
@@ -5,6 +6,7 @@ import mailindicator
 
 
 class GMailFeedFetcher:
+    """Fetch mails from GMail Feed"""
 
     def __init__(self, label, **kwargs):
         try:
@@ -18,6 +20,7 @@ class GMailFeedFetcher:
             raise Exception('Missing required userpassword for : %s' % label)
 
     def fetchmail(self):
+        """Fetch mails from GMail Feed"""
 
         credentials = base64.b64encode('%s:%s' % (self.username, self.passwd))
 
@@ -27,21 +30,21 @@ class GMailFeedFetcher:
         request_headers['Authorization'] = 'Basic %s' % credentials
 
         try:
-            d = feedparser.parse(url, request_headers=request_headers)
-            if d.status == 401:
+            feed = feedparser.parse(url, request_headers=request_headers)
+            if feed.status == 401:
                 raise mailindicator.AuthenticationError()
-            elif d.status >= 400:
+            elif feed.status >= 400:
                 import BaseHTTPServer
-                smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[d.status]
-                raise Exception('HTTP ERROR %s - %s - %s' % (d.status, smsg, lmsg))
-        except AttributeError as e:  # Raised by d.status if something went wrong in parsing
-            if d.bozo == 1:
-                raise d.bozo_exception
+                smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[feed.status]
+                raise Exception('HTTP ERROR %s - %s - %s' % (feed.status, smsg, lmsg))
+        except AttributeError as ex:  # Raised by d.status if something went wrong in parsing
+            if feed.bozo == 1:
+                raise feed.bozo_exception
             else:
-                raise e
+                raise ex
 
         mails = []
-        for entry in d.entries:
+        for entry in feed.entries:
             # print '-'*20
             # for key in entry.keys():
             #    print key, '\t\t', entry[key]

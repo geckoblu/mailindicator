@@ -1,8 +1,10 @@
+"""-"""
 from imaplib import IMAP4
 from mailindicator import Mail
 
 
 class ImapFetcher:
+    """Fetch mails from IMAP"""
 
     def __init__(self, label, **kwargs):
 
@@ -27,6 +29,7 @@ class ImapFetcher:
             self.port = 143
 
     def fetchmail(self):
+        """Fetch mails from IMAP"""
         mails = []
 
         imap = IMAP4(self.host, self.port)

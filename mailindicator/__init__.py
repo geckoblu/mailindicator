@@ -1,7 +1,9 @@
+"""-"""
 VERSION = '0.3'
 
 
 class Mail:
+    """Mail object."""
     def __init__(self, m_id, m_from, subject, date):
         self.id = m_id
         self.mfrom = m_from
@@ -9,7 +11,10 @@ class Mail:
         self.date = date
 
     def __str__(self):
-        return 'id: %s mfrom: %s subject: %s date: %s' % (self.id, self.mfrom, self.subject, self.date)
+        return 'id: %s mfrom: %s subject: %s date: %s' % (self.id,
+                                                          self.mfrom,
+                                                          self.subject,
+                                                          self.date)
 
 
 class AuthenticationError(Exception):

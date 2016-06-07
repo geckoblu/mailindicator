@@ -1,7 +1,10 @@
+"""-"""
 from mailindicator import gmailfeedfetcher, localmailboxfetcher, imapstarttlsfetcher, imapfetcher
 
 
 class Mailbox:
+    """Mailbox."""
+
     GMAILFEED = 'GMAILFEED'
     LOCALMBOX = 'LOCALMBOX'
     IMAP = 'IMAP'
@@ -28,6 +31,7 @@ class Mailbox:
             raise Exception('Not a valid Mailbox type: %s' % typ)
 
     def get_attributes_to_store(self):
+        """Return the list of attributes to save."""
         attributes = self.__dict__.copy()
         del attributes['type']
         del attributes['label']

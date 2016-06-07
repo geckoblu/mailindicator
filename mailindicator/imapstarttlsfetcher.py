@@ -1,8 +1,10 @@
+"""-"""
 from mailindicator import Mail
 from mailindicator.imapstarttls import IMAP4_STARTTLS
 
 
 class ImapStartTlsFetcher:
+    """Fetch mails from IMAP using STARTTLS"""
 
     def __init__(self, label, **kwargs):
 
@@ -27,6 +29,7 @@ class ImapStartTlsFetcher:
             self.port = 143
 
     def fetchmail(self):
+        """Fetch mails from IMAP using STARTTLS"""
         mails = []
 
         imap = IMAP4_STARTTLS(self.host)

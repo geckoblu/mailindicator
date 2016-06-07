@@ -1,9 +1,9 @@
-from lxml.etree import ElementTree, Element, Comment
-from mailindicator.mimailbox import Mailbox
+"""-"""
 import os
 import xdg.BaseDirectory
-
 import lxml.etree as etree
+
+from mailindicator.mimailbox import Mailbox
 
 
 XDG_RESOURCE = 'mailindicator'
@@ -17,6 +17,7 @@ https_proxy = ''
 
 
 def load(conffile=None):
+    """Load configuration from file."""
     if not conffile:
         conffile = _get_confifle_name()
 
@@ -30,6 +31,7 @@ def load(conffile=None):
 
 
 def save(conffile=None):
+    """Save configuration to file."""
     if not conffile:
         confpath = xdg.BaseDirectory.save_config_path(XDG_RESOURCE)
         conffile = os.path.join(confpath, XDG_CONFFILENAME)
@@ -46,56 +48,56 @@ def _parse_elementtree(tree):
     root = tree.getroot()
 
     # Global options ------------------------------------------------------
-    globalElement = root.find('global')
-    if globalElement is not None:
+    globalelement = root.find('global')
+    if globalelement is not None:
 
         # Proxy -----------------------------------------------------------
-        proxyElement = globalElement.find('proxy')
-        if proxyElement is not None:
-            use_proxy = proxyElement.get('use_proxy', False)
-            httpproxyElement = proxyElement.find('http_proxy')
-            if httpproxyElement is not None:
-                http_proxy = httpproxyElement.text
-            httpsproxyElement = proxyElement.find('https_proxy')
-            if httpsproxyElement is not None:
-                https_proxy = httpsproxyElement.text
+        proxyelement = globalelement.find('proxy')
+        if proxyelement is not None:
+            use_proxy = proxyelement.get('use_proxy', False)
+            http_proxyelement = proxyelement.find('http_proxy')
+            if http_proxyelement is not None:
+                http_proxy = http_proxyelement.text
+            https_proxyelement = proxyelement.find('https_proxy')
+            if https_proxyelement is not None:
+                https_proxy = https_proxyelement.text
             _set_proxy_environment()
 
     # Mailboxes -----------------------------------------------------------
     mailboxes = []
-    for mailboxElement in root.findall('mailboxes/mailbox'):
-        mailboxes.append(Mailbox(**mailboxElement.attrib))
+    for mailboxelement in root.findall('mailboxes/mailbox'):
+        mailboxes.append(Mailbox(**mailboxelement.attrib))
 
 
 def _create_elementtree():
-    root = Element(XDG_RESOURCE)
+    root = etree.Element(XDG_RESOURCE)
     root.set('version', '1.0')
-    root.append(Comment('Configuration file for mailindicator'))
+    root.append(etree.Comment('Configuration file for mailindicator'))
 
     # Global options ----------------------------------------------------------
-    globalElement = etree.SubElement(root, 'global')
+    globalelement = etree.SubElement(root, 'global')
 
     # Proxy -------------------------------------------------------------------
-    proxyElement = etree.SubElement(globalElement, 'proxy')
-    proxyElement.set('use_proxy', str(use_proxy))
-    httpproxyElement = etree.SubElement(proxyElement, 'http_proxy')
-    httpproxyElement.text = http_proxy
-    httpsproxyElement = etree.SubElement(proxyElement, 'https_proxy')
-    httpsproxyElement.text = https_proxy
+    proxyelement = etree.SubElement(globalelement, 'proxy')
+    proxyelement.set('use_proxy', str(use_proxy))
+    http_proxyelement = etree.SubElement(proxyelement, 'http_proxy')
+    http_proxyelement.text = http_proxy
+    https_proxyelement = etree.SubElement(proxyelement, 'https_proxy')
+    https_proxyelement.text = https_proxy
 
     # Mailboxes ---------------------------------------------------------------
     mbs = etree.SubElement(root, 'mailboxes')
 
     for mailbox in mailboxes:
-        mb = etree.SubElement(mbs, 'mailbox')
-        mb.set('typ', mailbox.type)
-        mb.set('label', mailbox.label)
-        mb.set('sleep_time', str(mailbox.sleep_time))
+        mbox = etree.SubElement(mbs, 'mailbox')
+        mbox.set('typ', mailbox.type)
+        mbox.set('label', mailbox.label)
+        mbox.set('sleep_time', str(mailbox.sleep_time))
         for attribute_name, attribute_value in mailbox.get_attributes_to_store():
-            mb.set(attribute_name, str(attribute_value))
+            mbox.set(attribute_name, str(attribute_value))
 
     # Create tree -------------------------------------------------------------
-    tree = ElementTree(root)
+    tree = etree.ElementTree(root)
     # etree.dump(root)
     return tree
 
