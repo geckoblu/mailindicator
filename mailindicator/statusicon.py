@@ -205,6 +205,13 @@ class StatusIcon:
         itm.connect("activate", self._show_about_dialog)
         menu.append(itm)
 
+        itm = gtk.SeparatorMenuItem()
+        menu.append(itm)
+
+        itm = gtk.ImageMenuItem(gtk.STOCK_QUIT)
+        itm.connect("activate", self._quit)
+        menu.append(itm)
+
         menu.show_all()
         menu.popup(None, None, None, button, time)
 
@@ -222,6 +229,10 @@ class StatusIcon:
 
         about_dialog.run()
         about_dialog.destroy()
+
+    def _quit(self, widget):
+        import sys
+        sys.exit(0)
 
 
 _LICENSE = """This program is free software; you can redistribute it and/or modify it

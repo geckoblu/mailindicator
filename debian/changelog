@@ -1,3 +1,14 @@
+mailindicator (0.4) UNRELEASED; urgency=low
+
+  * 'quit' option in menu
+  * config file as parameter
+  * Pylint
+  * PEP8
+  * Fix gmailfeedfetcher gzip content parsing
+  * Fix gmailfeedfetcher 'invalid header value'
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 15 Jun 2016 11:17:07 +0200
+
 mailindicator (0.3) unstable; urgency=low
 
   * Added IMAP fetching
