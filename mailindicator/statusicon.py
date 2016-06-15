@@ -231,6 +231,7 @@ class StatusIcon:
         about_dialog.destroy()
 
     def _quit(self, widget):
+        info('StatusIcon: Quitting')
         import sys
         sys.exit(0)
 
