@@ -28,6 +28,13 @@ def debug(message):
         print(message)
 
 
+def debug_ex():
+    """Log exception."""
+    if _LEVEL >= DEBUG:
+        import traceback
+        traceback.print_exc()
+
+
 def error(message):
     """Log error messages."""
     sys.stderr.write(message)

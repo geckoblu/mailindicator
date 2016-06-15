@@ -10,10 +10,10 @@
   </global>
   -->
   <mailboxes>
-    <mailbox typ="LOCALMBOX" label="System2" sleep_time="3" mboxpath="/var/spool/mail/alessio2"/>
-    <!--
-    <mailbox typ="GMAILFEED" label="GMAIL" sleep_time="300" username="alessio.piccoli" userpassword="Echo09.box2"/>
     <mailbox typ="GMAILFEED" label="GECKOBLU" sleep_time="3600" username="geckoblu01" userpassword="Echo09.box3" />
+    <!--
+    <mailbox typ="LOCALMBOX" label="System2" sleep_time="3" mboxpath="/var/spool/mail/alessio2"/>
+    <mailbox typ="GMAILFEED" label="GMAIL" sleep_time="300" username="alessio.piccoli" userpassword="Echo09.box2"/>
     <mailbox typ="LOCALMBOX" label="System" sleep_time="60" mboxpath="/var/spool/mail/alessio"/>
     <mailbox typ="IMAPSTARTTLS" label="Work" sleep_time="300" username="WN00046605" userpassword="WN.46605" host="autodiscover.wuerth.it" />
     -->

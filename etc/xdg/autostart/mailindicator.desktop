@@ -4,6 +4,6 @@ Icon=mailindicator
 Comment=Monitors mailboxes for new mail.
 Type=Application
 Categories=GTK;Network;Email;
-Exec=mailindicator
+Exec=mailindicator -q
 Terminal=false
 StartupNotify=true

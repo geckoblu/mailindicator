@@ -27,11 +27,12 @@ class StatusIcon:
         self.statusicon.connect('popup-menu', self._right_click_event)
         self.statusicon.connect('activate', self._left_click_event)
 
+        self.pynotify_available = pynotify.init('mailindicator')
+        self.monitors = []
         self.mailboxes = {}
         self.markedasread = {}
         self.notified = {}
-        self.pynotify_available = pynotify.init('mailindicator')
-        self.monitors = []
+        self.ignoreerrors = {}
 
     def set_monitors(self, monitors):
         """Set monitors"""
@@ -47,17 +48,22 @@ class StatusIcon:
 
     def _left_click_event(self, icon):
         debug('StatusIcon clicked')
+
         for label in self.mailboxes.keys():
             mailbox = self.mailboxes[label]
             if not mailbox.inerror:
-
                 if label not in self.markedasread:
                     self.markedasread[label] = []
                 markedasread = self.markedasread[label]
                 markedasread = markedasread + mailbox.unread_ids
                 self.markedasread[label] = markedasread
-
-                del self.mailboxes[label]
+            else:
+                if label not in self.ignoreerrors:
+                    self.ignoreerrors[label] = []
+                ignoreerrors = self.ignoreerrors[label]
+                ignoreerrors += [mailbox.errormessage]
+                self.ignoreerrors[label] = ignoreerrors
+            del self.mailboxes[label]
 
         self._update_status()
 
@@ -140,16 +146,19 @@ class StatusIcon:
                         notified = self.notified[label]
 
                         if mail.id not in notified:
-                            debug('StatusIcon Mail not notified %s' % mail)
+                            debug('StatusIcon %s: Mail not notified %s' % (label, mail))
                             notified.append(mail.id)
                             smr = smr.replace('<', '&lt;')
                             smr = smr.replace('>', '&gt;')
                             ntf = pynotify.Notification('New Message', smr)
                             ntf.show()
                         else:
-                            debug('StatusIcon Mail already notified %s' % mail)
+                            debug('StatusIcon %s: Mail already notified %s' % (label, mail))
                 else:
-                    debug('StatusIcon Mail marked as read %s' % mail)
+                    debug('StatusIcon %s: Mail marked as read %s' % (label, mail))
+
+        if label in self.ignoreerrors:
+            del self.ignoreerrors[label]
 
         if unread > 0:
             mailbox = MB(label)
@@ -158,13 +167,18 @@ class StatusIcon:
             mailbox.summary = summary
             self.mailboxes[label] = mailbox
         else:
-            info('StatusIcon %s No unread mail found' % label)
+            info('StatusIcon %s: No unread mail found' % label)
             if label in self.mailboxes:
                 del self.mailboxes[label]
+
         self._update_status()
 
     def set_error(self, label, message):
         """Set error."""
+
+        if label in self.ignoreerrors and message in self.ignoreerrors[label]:
+            return
+
         mailbox = MB(label)
         mailbox.inerror = True
         mailbox.errormessage = message
