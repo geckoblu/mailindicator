@@ -11,13 +11,15 @@ import mailindicator.config as config
 def _parse_cmdline():
 
     parser = argparse.ArgumentParser(description='Monitors mailboxes for new mail.')
-    parser.add_argument('--debug',
+    parser.add_argument('-d', '--debug',
                         action='store_true',
                         help='show some debug messages in console')
     parser.add_argument('-q', '--quiet',
-                        dest='quiet',
                         action='store_true',
                         help='suppress non-error messages in console')
+    parser.add_argument('-f', '--file',
+                        type=argparse.FileType('r'),
+                        help='use the given config file instead of the default one')
 
     return parser.parse_args()
 
@@ -34,9 +36,10 @@ def main():
     else:
         logging.set_level(logging.INFO)
 
-    logging.set_level(logging.DEBUG)
-
-    config.load()
+    if args.file:
+        config.load(args.file)
+    else:
+        config.load()
 
     logging.info("Mailindicator started.")
 
