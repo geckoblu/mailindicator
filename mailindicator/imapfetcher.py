@@ -1,5 +1,6 @@
 """-"""
 from imaplib import IMAP4
+
 from mailindicator import Mail
 
 

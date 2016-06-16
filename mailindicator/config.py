@@ -1,8 +1,8 @@
 """-"""
 import os
 import xdg.BaseDirectory
-import lxml.etree as etree
 
+import lxml.etree as etree  # @UnresolvedImport : Just a problem with pydev, it is defined
 from mailindicator.mimailbox import Mailbox
 
 

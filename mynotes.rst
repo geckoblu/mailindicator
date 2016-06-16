@@ -8,7 +8,7 @@ Build environment
 
 pylint
 ------
-pylint -f html --rcfile=./pylintrc mailindicator > ~/tmp/mailindicator-pylint.html
+pylint3 -f html --rcfile=./pylintrc mailindicator > ~/tmp/mailindicator-pylint.html
 
 tests and code coverage
 -----------------------

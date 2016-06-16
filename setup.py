@@ -1,10 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+"""
+  Author: Alessio Piccoli <alepic@geckoblu.net>
 
-# Author: Alessio Piccoli <alepic@geckoblu.net>
+  This script needs python-distutils-extra, an extension to the standard
+  distutils which provides i18n, icon support, etc.
 
-# This script needs python-distutils-extra, an extension to the standard
-# distutils which provides i18n, icon support, etc.
-# https://launchpad.net/python-distutils-extra
+  https://launchpad.net/python-distutils-extra
+"""
 
 from distutils.version import StrictVersion
 

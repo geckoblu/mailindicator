@@ -2,14 +2,13 @@ Source: mailindicator
 Section: utils
 Priority: optional
 Maintainer: Alessio Piccoli <alepic@geckoblu.net>
-Build-Depends: debhelper (>= 8), python (>= 2.4), python-distutils-extra (>= 2.10)
+Build-Depends: debhelper (>= 8), python3 (>= 3.5), python3-distutils-extra (>= 2.10)
 Standards-Version: 3.9.5
 Homepage: http://www.geckoblu.net/html/mailindicator.html
 Vcs-Git: git://github.com/geckoblu/mailindicator.git
 
 Package: mailindicator
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-lxml, python-xdg, python-feedparser
-Recommends: python-notify
+Depends: ${misc:Depends}, ${python:Depends}, python3-lxml, python3-xdg, python3-feedparser, libnotify4
 Description: Monitors mailboxes for new mail.
  Monitors mailboxes for new mail showing the status.

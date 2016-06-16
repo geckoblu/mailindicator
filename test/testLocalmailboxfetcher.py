@@ -6,7 +6,7 @@ import os
 import tempfile
 import unittest
 
-from testconstants import MBOX
+from testconstants import MBOX  # @UnresolvedImport : Just a problem with pydev, it is defined
 
 
 class TestLocalmailboxfetcher(unittest.TestCase):
@@ -19,8 +19,8 @@ class TestLocalmailboxfetcher(unittest.TestCase):
         mboxfetcher = mailindicator.localmailboxfetcher.LocalMailboxFetcher(mboxpath)
         try:
             mboxfetcher.fetchmail()
-        except NoSuchMailboxError, e:
-            message = str(e)
+        except NoSuchMailboxError as ex:
+            message = str(ex)
             assert message == 'The specified mailbox does not exist /unexistentfile'
             gotexception = True
 
@@ -33,8 +33,8 @@ class TestLocalmailboxfetcher(unittest.TestCase):
         mboxfetcher = mailindicator.localmailboxfetcher.LocalMailboxFetcher(mboxpath)
         try:
             mails = mboxfetcher.fetchmail()
-        except Exception, e:
-            message = str(e)
+        except Exception as ex:
+            message = str(ex)
             # print message
             gotexception = True
 

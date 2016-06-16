@@ -1,6 +1,7 @@
 """-"""
 from mailbox import NoSuchMailboxError
 import mailbox
+
 from mailindicator import Mail
 
 

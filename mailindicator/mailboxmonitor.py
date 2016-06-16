@@ -1,6 +1,7 @@
 """-"""
 import threading
-import gobject
+from gi.repository import GObject
+
 import mailindicator
 from mailindicator.logging import info, debug, debug_ex
 from mailindicator.network import network_available
@@ -22,7 +23,7 @@ class MailboxMonitor(threading.Thread):
 
     def _update(self):
         self.refresh()
-        gobject.timeout_add(self.sleep_time, self._update)
+        GObject.timeout_add(self.sleep_time, self._update)
 
     def refresh(self):
         """Refresh mailbox status."""

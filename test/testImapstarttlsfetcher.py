@@ -13,11 +13,11 @@ class TestImapstarttlsfetcher(unittest.TestCase):
 
         try:
             mails = fetcher.fetchmail()
-        except Exception, e:
-            print e
+        except Exception as ex:
+            print(ex)
 
         for mail in mails:
-            print mail
+            print(mail)
 
 
 if __name__ == "__main__":

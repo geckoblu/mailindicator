@@ -1,8 +1,8 @@
 """-"""
 import base64
 import feedparser
-from mailindicator import Mail
-import mailindicator
+
+from mailindicator import Mail, AuthenticationError
 
 
 class GMailFeedFetcher:
@@ -32,9 +32,9 @@ class GMailFeedFetcher:
         try:
             feed = feedparser.parse(url, request_headers=request_headers)
             if feed.status == 401:
-                raise mailindicator.AuthenticationError()
+                raise AuthenticationError()
             elif feed.status >= 400:
-                import BaseHTTPServer
+                import BaseHTTPServer  # @UnresolvedImport : Just a problem with pydev, it is defined
                 smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[feed.status]
                 raise Exception('HTTP ERROR %s - %s - %s' % (feed.status, smsg, lmsg))
         except AttributeError as ex:  # Raised by d.status if something went wrong in parsing

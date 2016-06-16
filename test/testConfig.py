@@ -1,11 +1,11 @@
-from mailindicator.mimailbox import Mailbox
 import os
 import tempfile
 import unittest
 
-import lxml.etree as etree
+import lxml.etree as etree  # @UnresolvedImport : Just a problem with pydev, it is defined
 import mailindicator.config as config
-from test.testconstants import TESTCONFIG
+from mailindicator.mimailbox import Mailbox
+from test.testconstants import TESTCONFIG  # @UnresolvedImport : Just a problem with pydev, it is defined
 
 
 class TestConfig(unittest.TestCase):

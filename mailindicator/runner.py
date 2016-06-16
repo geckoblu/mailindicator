@@ -1,11 +1,14 @@
 """-"""
 import argparse
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import Gdk
+
+import mailindicator.config as config
 import mailindicator.logging as logging
 from mailindicator.mailboxmonitor import MailboxMonitor
 from mailindicator.statusicon import StatusIcon
-
-import mailindicator.config as config
 
 
 def _parse_cmdline():
@@ -59,5 +62,5 @@ def main():
 
         status_icon.set_monitors(monitors)
 
-        gtk.gdk.threads_init()  # @UndefinedVariable : Just a problem with pydev, it is defined
-        gtk.main()
+        Gdk.threads_init()
+        Gtk.main()
