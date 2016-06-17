@@ -23,3 +23,13 @@ class AuthenticationError(Exception):
     Most probably the server didn't accept the username/password
     combination provided.
     """
+
+
+def strtobool(val):
+    """Convert a string representation of truth to True or False.
+
+    True values are 'y', 'yes', 't', 'true', 'on', and '1';
+    False is anything else.
+    """
+    val = val.lower()
+    return val in ('y', 'yes', 't', 'true', 'on', '1')

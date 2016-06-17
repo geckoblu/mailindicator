@@ -22,12 +22,12 @@ class GMailFeedFetcher:
     def fetchmail(self):
         """Fetch mails from GMail Feed"""
 
-        credentials = base64.b64encode('%s:%s' % (self.username, self.passwd))
+        credentials = base64.b64encode(bytes('%s:%s' % (self.username, self.passwd), 'utf-8'))
 
         url = 'https://mail.google.com/mail/feed/atom/'
 
         request_headers = {}
-        request_headers['Authorization'] = 'Basic %s' % credentials
+        request_headers['Authorization'] = b'Basic %s' % credentials
 
         try:
             feed = feedparser.parse(url, request_headers=request_headers)

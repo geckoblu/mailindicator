@@ -162,7 +162,7 @@ class StatusIcon:
                                 notified.append(mail.id)
                                 smr = smr.replace('<', '&lt;')
                                 smr = smr.replace('>', '&gt;')
-                                ntf = Notify.Notification('New Message', smr)
+                                ntf = Notify.Notification.new('New Message', smr)
                                 ntf.show()
                             else:
                                 debug('StatusIcon %s: Mail already notified %s' % (label, mail))

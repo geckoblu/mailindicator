@@ -1,4 +1,10 @@
-mailindicator (0.4) UNRELEASED; urgency=low
+mailindicator (0.5) unstable; urgency=medium
+
+  * Porting to python3 - Gtk3 
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 16 Jun 2016 11:51:52 +0200
+
+mailindicator (0.4) unstable; urgency=low
 
   * 'quit' option in menu
   * config file as parameter

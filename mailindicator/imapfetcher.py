@@ -1,7 +1,7 @@
 """-"""
 from imaplib import IMAP4
 
-from mailindicator import Mail
+from mailindicator import Mail, strtobool
 
 
 class ImapFetcher:
@@ -29,11 +29,15 @@ class ImapFetcher:
         else:
             self.port = 143
 
+        self.starttls = 'starttls' in kwargs and strtobool(kwargs['starttls'])
+
     def fetchmail(self):
         """Fetch mails from IMAP"""
         mails = []
 
         imap = IMAP4(self.host, self.port)
+        if self.starttls:
+            imap.starttls()
         imap.login(self.username, self.passwd)
         imap.select(readonly=True)
 
@@ -51,8 +55,9 @@ class ImapFetcher:
         return mails
 
     def _message_from_data(self, data):
+        body = data[0][1].decode('utf-8')
         message = {}
-        for line in data[0][1].split('\n'):
+        for line in body.split('\n'):
             i = line.find(':')
             if i > -1:
                 key = line[:i].strip().upper()

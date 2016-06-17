@@ -1,5 +1,5 @@
 """-"""
-from mailindicator import gmailfeedfetcher, localmailboxfetcher, imapstarttlsfetcher, imapfetcher
+from mailindicator import gmailfeedfetcher, localmailboxfetcher, imapfetcher
 
 
 class Mailbox:
@@ -25,8 +25,6 @@ class Mailbox:
             self.fetcher = localmailboxfetcher.LocalMailboxFetcher(label, **kwargs)
         elif self.type == Mailbox.IMAP:
             self.fetcher = imapfetcher.ImapFetcher(label, **kwargs)
-        elif self.type == Mailbox.IMAPSTARTTLS:
-            self.fetcher = imapstarttlsfetcher.ImapStartTlsFetcher(label, **kwargs)
         else:
             raise Exception('Not a valid Mailbox type: %s' % typ)
 
