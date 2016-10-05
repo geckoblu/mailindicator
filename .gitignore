@@ -7,3 +7,4 @@ debian/mailindicator.postinst.debhelper
 debian/mailindicator.prerm.debhelper
 debian/mailindicator.substvars
 debian/mailindicator/
+pylintrc_template
