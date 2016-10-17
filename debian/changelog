@@ -1,6 +1,7 @@
-mailindicator (0.5) unstable; urgency=medium
+mailindicator (0.5.1) xenial; urgency=medium
 
   * Porting to python3 - Gtk3 
+  * Build for xenial
 
  -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 16 Jun 2016 11:51:52 +0200
 
