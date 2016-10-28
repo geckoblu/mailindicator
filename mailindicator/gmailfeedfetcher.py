@@ -37,7 +37,7 @@ class GMailFeedFetcher:
                 import BaseHTTPServer  # @UnresolvedImport : Just a problem with pydev, it is defined
                 smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[feed.status]
                 raise Exception('HTTP ERROR %s - %s - %s' % (feed.status, smsg, lmsg))
-        except AttributeError as ex:  # Raised by d.status if something went wrong in parsing
+        except AttributeError as ex:  # Raised by feed.status if something went wrong in parsing
             if feed.bozo == 1:
                 raise feed.bozo_exception
             else:

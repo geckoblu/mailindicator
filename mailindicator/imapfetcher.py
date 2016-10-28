@@ -1,7 +1,7 @@
 """-"""
-from imaplib import IMAP4
+from imaplib import IMAP4, IMAP4_SSL
 
-from mailindicator import Mail, strtobool
+from mailindicator import Mail
 
 
 class ImapFetcher:
@@ -24,20 +24,36 @@ class ImapFetcher:
         except KeyError:
             raise Exception('Missing required host for : %s' % label)
 
+        self.security = None
+        if 'security' in kwargs:
+            security = kwargs['security'].upper()
+            if security == 'NONE':
+                self.security = None
+            elif security == 'STARTTLS':
+                self.security = 'STARTTLS'
+            elif security == 'SSL/TLS':
+                self.security = 'SSL/TLS'
+            else:
+                raise Exception('Wrong security parameter %s for : %s' % (security, label))
+
         if 'port' in kwargs:
             self.port = kwargs['port']
         else:
-            self.port = 143
-
-        self.starttls = 'starttls' in kwargs and strtobool(kwargs['starttls'])
+            if self.security == 'SSL/TLS':
+                self.port = 993
+            else:
+                self.port = 143
 
     def fetchmail(self):
         """Fetch mails from IMAP"""
         mails = []
 
-        imap = IMAP4(self.host, self.port)
-        if self.starttls:
-            imap.starttls()
+        if self.security == 'SSL/TLS':
+            imap = IMAP4_SSL(self.host, self.port)
+        else:
+            imap = IMAP4(self.host, self.port)
+            if self.security == 'STARTTLS':
+                imap.starttls()
         imap.login(self.username, self.passwd)
         imap.select(readonly=True)
 
