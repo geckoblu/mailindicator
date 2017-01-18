@@ -1,3 +1,9 @@
+mailindicator (0.5.2) xenial; urgency=medium
+
+  * Enhanced IMAP connection security handling 
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 02 Nov 2016 09:39:31 +0100
+
 mailindicator (0.5.1) xenial; urgency=medium
 
   * Porting to python3 - Gtk3 

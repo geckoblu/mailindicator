@@ -1,10 +1,13 @@
 .project
+.pybuild/
 .pydevproject
 build/
+debian/debhelper-build-stamp
 debian/files
+debian/mailindicator/
 debian/mailindicator.debhelper.log
 debian/mailindicator.postinst.debhelper
 debian/mailindicator.prerm.debhelper
 debian/mailindicator.substvars
-debian/mailindicator/
 pylintrc_template
+
