@@ -21,6 +21,7 @@ class TestGmailfeedfetcher(unittest.TestCase):
         fetcher = GMailFeedFetcher('GMAIL', username=username, userpassword=userpassword)
         mails = fetcher.fetchmail()
         print(mails)
+        #print("["+", ".join(mails)+"]")
 
 
 if __name__ == "__main__":

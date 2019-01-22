@@ -11,10 +11,14 @@ class Mail:
         self.date = date
 
     def __str__(self):
-        return 'id: %s mfrom: %s subject: %s date: %s' % (self.id,
-                                                          self.mfrom,
-                                                          self.subject,
-                                                          self.date)
+        return 'Mail[id:"%s", mfrom:"%s", subject:"%s", date:"%s"]' % \
+                    (self.id,
+                     self.mfrom,
+                     self.subject,
+                     self.date)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class AuthenticationError(Exception):

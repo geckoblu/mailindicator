@@ -1,6 +1,17 @@
 """-"""
 import base64
-import feedparser
+import mailindicator.feedparser as feedparser
+
+#print(feedparser._base64decode)
+
+
+def _base64decode(s):
+    return 'joijoijoijo'
+#    return base64.decodestring(s)
+
+#feedparser._base64decode = _base64decode
+#print(feedparser._base64decode)
+
 
 from mailindicator import Mail, AuthenticationError
 
