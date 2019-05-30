@@ -2,7 +2,7 @@ Source: mailindicator
 Section: utils
 Priority: optional
 Maintainer: Alessio Piccoli <alepic@geckoblu.net>
-Build-Depends: debhelper (>= 8), python3 (>= 3.5), python3-distutils-extra (>= 2.10)
+Build-Depends: debhelper (>= 8), python3 (>= 3.5), python3-distutils-extra (>= 2.10), dh-python
 Standards-Version: 3.9.7
 Homepage: http://www.geckoblu.net/html/mailindicator.html
 Vcs-Git: git://github.com/geckoblu/mailindicator.git
