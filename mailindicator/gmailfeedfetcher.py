@@ -1,19 +1,7 @@
-"""-"""
-import base64
-import mailindicator.feedparser as feedparser
-
-#print(feedparser._base64decode)
-
-
-def _base64decode(s):
-    return 'joijoijoijo'
-#    return base64.decodestring(s)
-
-#feedparser._base64decode = _base64decode
-#print(feedparser._base64decode)
-
+import feedparser
 
 from mailindicator import Mail, AuthenticationError
+from mailindicator.gmailoauth2 import GMailOAuth2
 
 
 class GMailFeedFetcher:
@@ -21,46 +9,31 @@ class GMailFeedFetcher:
 
     def __init__(self, label, **kwargs):
         try:
-            self.username = kwargs['username']
+            self.mailbox = kwargs['mailbox']
         except KeyError:
-            raise Exception('Missing required username for : %s' % label)
-
-        try:
-            self.passwd = kwargs['userpassword']
-        except KeyError:
-            raise Exception('Missing required userpassword for : %s' % label)
+            raise Exception('Missing required mailbox for : %s' % label)
 
     def fetchmail(self):
-        """Fetch mails from GMail Feed"""
 
-        credentials = base64.b64encode(bytes('%s:%s' % (self.username, self.passwd), 'utf-8'))
+        gmailoauth2 = GMailOAuth2(self.mailbox)
 
-        url = 'https://mail.google.com/mail/feed/atom/'
+        data = gmailoauth2.read_feed()
 
-        request_headers = {}
-        request_headers['Authorization'] = b'Basic %s' % credentials
+        if data:
+            feed = feedparser.parse(data)
+    
+            mails = []
+            for entry in feed.entries:
+                # print '-'*20
+                # for key in entry.keys():
+                #    print key, '\t\t', entry[key]
+                # TODO for the date look at 'published_parsed'
+                mail = Mail(entry['id'], entry['author'], entry['title'], entry['published'])
+                mails.append(mail)
+    
+            return mails
 
-        try:
-            feed = feedparser.parse(url, request_headers=request_headers)
-            if feed.status == 401:
-                raise AuthenticationError()
-            elif feed.status >= 400:
-                import BaseHTTPServer  # @UnresolvedImport : Just a problem with pydev, it is defined
-                smsg, lmsg = BaseHTTPServer.BaseHTTPRequestHandler.responses[feed.status]
-                raise Exception('HTTP ERROR %s - %s - %s' % (feed.status, smsg, lmsg))
-        except AttributeError as ex:  # Raised by feed.status if something went wrong in parsing
-            if feed.bozo == 1:
-                raise feed.bozo_exception
-            else:
-                raise ex
 
-        mails = []
-        for entry in feed.entries:
-            # print '-'*20
-            # for key in entry.keys():
-            #    print key, '\t\t', entry[key]
-            # TODO for the date look at 'published_parsed'
-            mail = Mail(entry['id'], entry['author'], entry['title'], entry['published'])
-            mails.append(mail)
-
-        return mails
+if __name__ == "__main__":
+    feedfetcher = GMailFeedFetcher(label='GECKOBLU', mailbox='geckoblu01@gmail.com')
+    feedfetcher.fetchmail()
