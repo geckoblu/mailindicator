@@ -1,9 +1,10 @@
 import configparser
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 import sys
-import webbrowser
-from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qsl
+from urllib.error import HTTPError
+import webbrowser
 
 from mailindicator.sanction import Client, transport_headers
 
@@ -82,6 +83,8 @@ def save_refresh_token(mailbox, refresh_token):
             config['tokens']
         except KeyError:
             config.add_section('tokens')
+    else:
+        config.add_section('tokens')
 
     config.set('tokens', mailbox, refresh_token)
 
@@ -106,9 +109,14 @@ class GMailOAuth2:
                 resource_endpoint=RESOURCE_ENDPOINT,
                 token_transport=transport_headers)
 
-            rc.request_token(
-                grant_type='refresh_token',
-                refresh_token=refresh_token)
+            try:
+                rc.request_token(
+                    grant_type='refresh_token',
+                    refresh_token=refresh_token)
+            except HTTPError:
+                # Ask for a new token
+                data = self.request_new_token()
+                return data
 
             return rc.request('/mail/feed/atom', parser=lambda c: c)
 
@@ -138,7 +146,7 @@ class GMailOAuth2:
 
         # server.serve_forever()
         server.handle_request()
-        
+
         return server.data
 
 
@@ -193,7 +201,7 @@ class _Handler(BaseHTTPRequestHandler):
                 redirect_uri=redirect_uri)
 
             save_refresh_token(self.server.mailbox, c.refresh_token)
-            
+
             self.wfile.write("AUTHENTICATION SUCCEEDED".encode(ENCODING_UTF8))
-            
+
             self.server.data = c.request('/mail/feed/atom', parser=lambda c: c)
