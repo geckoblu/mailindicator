@@ -1,3 +1,9 @@
+mailindicator (0.6) jammy; urgency=medium
+
+  * OAuth2 authentication for GMail
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Fri, 18 Nov 2022 09:20:48 +0100
+
 mailindicator (0.5.3ubuntu1) disco; urgency=medium
 
   * Fix dh-python build dependencies

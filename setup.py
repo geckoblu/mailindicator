@@ -29,5 +29,5 @@ DistUtilsExtra.auto.setup(
     license='GPL v3 or later',
     author="Alessio Piccoli",
     author_email="alepic@geckoblu.net",
-    packages=['mailindicator']
+    packages=['mailindicator', 'mailindicator.sanction']
 )
