@@ -64,3 +64,5 @@ def main():
 
         Gdk.threads_init()
         Gtk.main()
+    else:
+        logging.info("No mailboxe configured. Exit.")
