@@ -1,12 +1,4 @@
 * internalizzation
-* Store password encrypted (better outside)
 * enable/disable mailboxes
 * configuration GUI
 * permanent hide mail on click (currently is not permanent)
-
-
-
-DONE
-* debian
-* check network availability
-
