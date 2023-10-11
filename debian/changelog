@@ -1,0 +1,68 @@
+mailindicator (0.6) jammy; urgency=medium
+
+  * OAuth2 authentication for GMail
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Fri, 18 Nov 2022 09:20:48 +0100
+
+mailindicator (0.5.3ubuntu1) disco; urgency=medium
+
+  * Fix dh-python build dependencies
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Fri, 24 May 2019 14:41:56 +0200
+
+mailindicator (0.5.3) disco; urgency=medium
+
+  * Build for disco
+  * Fix string encoding bug
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Fri, 10 May 2019 08:52:13 +0200
+
+mailindicator (0.5.2) xenial; urgency=medium
+
+  * Enhanced IMAP connection security handling 
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 02 Nov 2016 09:39:31 +0100
+
+mailindicator (0.5.1) xenial; urgency=medium
+
+  * Porting to python3 - Gtk3 
+  * Build for xenial
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 16 Jun 2016 11:51:52 +0200
+
+mailindicator (0.4) unstable; urgency=low
+
+  * 'quit' option in menu
+  * config file as parameter
+  * Pylint
+  * PEP8
+  * Fix gmailfeedfetcher gzip content parsing
+  * Fix gmailfeedfetcher 'invalid header value'
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 15 Jun 2016 11:17:07 +0200
+
+mailindicator (0.3) unstable; urgency=low
+
+  * Added IMAP fetching
+  * Better configuration parameters handling
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Tue, 28 Jul 2015 08:58:52 +0200
+ 
+mailindicator (0.2.1) unstable; urgency=low
+
+  * Fix notification of special characters (angle brackets)
+  * Update debian Standards-Version to 3.9.5
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 26 Jun 2014 07:58:52 +0200
+
+mailindicator (0.2) unstable; urgency=low
+
+  * Check network availability
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Fri, 18 Jan 2013 15:13:42 +0100
+
+mailindicator (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 17 Dec 2012 13:46:33 +0200
