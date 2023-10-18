@@ -1,3 +1,9 @@
+mailindicator (0.8) jammy; urgency=medium
+
+  * Update package building
+
+ -- Alessio <alepic@geckoblu.net>  Wed, 18 Oct 2023 16:16:52 +0200
+
 mailindicator (0.6) jammy; urgency=medium
 
   * OAuth2 authentication for GMail
@@ -19,13 +25,13 @@ mailindicator (0.5.3) disco; urgency=medium
 
 mailindicator (0.5.2) xenial; urgency=medium
 
-  * Enhanced IMAP connection security handling 
+  * Enhanced IMAP connection security handling
 
  -- Alessio Piccoli <alepic@geckoblu.net>  Wed, 02 Nov 2016 09:39:31 +0100
 
 mailindicator (0.5.1) xenial; urgency=medium
 
-  * Porting to python3 - Gtk3 
+  * Porting to python3 - Gtk3
   * Build for xenial
 
  -- Alessio Piccoli <alepic@geckoblu.net>  Thu, 16 Jun 2016 11:51:52 +0200
@@ -47,7 +53,7 @@ mailindicator (0.3) unstable; urgency=low
   * Better configuration parameters handling
 
  -- Alessio Piccoli <alepic@geckoblu.net>  Tue, 28 Jul 2015 08:58:52 +0200
- 
+
 mailindicator (0.2.1) unstable; urgency=low
 
   * Fix notification of special characters (angle brackets)

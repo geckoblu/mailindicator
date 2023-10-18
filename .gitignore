@@ -8,3 +8,10 @@ deb_dist/
 dist/
 mailindicator-*.tar.gz
 mailindicator.egg-info/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/mailindicator.postinst.debhelper
+debian/mailindicator.prerm.debhelper
+debian/mailindicator.substvars
+debian/mailindicator/
