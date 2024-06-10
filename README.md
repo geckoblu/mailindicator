@@ -19,6 +19,10 @@ cp ~/soft/ubuntu-install/installation-22.04/data/configuration_backup/user/maili
 
 sudo aptitude install python3-setuptools build-essential devscripts debhelper dh-python
 
+### build .deb
+
+debuild -us -uc
+
 
 ### with stdeb
 
